@@ -4,6 +4,7 @@ import React from "react";
 "use client"
 
 import { useState, useEffect } from "react"
+import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 import {
   ArrowRight,
@@ -31,6 +32,7 @@ import {
   Moon,
   Sun,
 } from "lucide-react"
+import Footer from "../../components/common/Footer"
 import { motion } from "framer-motion"
 import { useTheme } from "../../contexts/ThemeContext"
 const iconBounce = {
@@ -74,7 +76,20 @@ useEffect(() => {
     { title: "Offer Filtering", description: "Advanced filters for investment criteria.", icon: <Filter className='h-8 w-8 text-emerald-600' /> },
     { title: "Secure Submission", description: "Confidence in IP protection.", icon: <Shield className='h-8 w-8 text-emerald-600' /> },
   ]
+const [topInvestors, setTopInvestors] = useState([]);
+const [topProjectOwners, setTopProjectOwners] = useState([])
+useEffect(() => {
+  const fetchTopOwners = async () => {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/projectowner/top-project-owners/")
+      setTopProjectOwners(res.data)
+    } catch (error) {
+      console.error("❌ Failed to fetch top project owners:", error)
+    }
+  }
 
+  fetchTopOwners()
+}, [])
   const projects = [
   {
     name: "EcoTech Solutions",
@@ -153,15 +168,23 @@ useEffect(() => {
     }, 3000)
     return () => clearInterval(interval)
   }, [])
+useEffect(() => {
+  const fetchTopInvestors = async () => {
+    try {
+      const res = await axios.get("http://127.0.0.1:8000/investor/top-investors/");
+      setTopInvestors(res.data);
+    } catch (error) {
+      console.error("❌ Error fetching top investors:", error);
+    }
+  };
+
+  fetchTopInvestors();
+}, []);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-   {/* navbar */}
-
 <nav className="bg-white shadow fixed w-full top-0 z-50 dark:bg-gray-800 dark:shadow-md">
   <div className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
-    
-    {/* ✅ الشعار ملتصق باليسار */}
     <div className="pl-0">
       <Link to="/" className="flex items-center">
         <img
@@ -171,8 +194,6 @@ useEffect(() => {
         />
       </Link>
     </div>
-
-    {/* ✅ الروابط */}
     <div className="hidden md:flex items-center gap-6 text-[15px] font-medium">
       
 
@@ -188,8 +209,6 @@ useEffect(() => {
     </div>
   </div>
 </nav>
-
-{/* hero section */}
      <section className="relative bg-gradient-to-r from-blue-900 to-emerald-800 overflow-hidden pt-20">
   <div className="relative max-w-7xl mx-auto px-4 py-24 text-center">
     <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
@@ -205,8 +224,6 @@ useEffect(() => {
       Join SmartBidder
     </button>
   </div>
-
-  {/* الموجة تدعم الوضع الليلي الآن */}
   <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
     <svg
       className="relative block w-full h-[80px] text-white dark:text-gray-900"
@@ -223,20 +240,14 @@ useEffect(() => {
     </svg>
   </div>
 </section>
-{/* Revolutionizing section */}
      <section className="py-20 text-center px-4">
   <div className="max-w-4xl mx-auto">
-    {/* الأيقونة */}
      <div className="max-w-3xl mx-auto">
     <Brain className="w-12 h-12 text-emerald-500 mx-auto mb-6" />
     </div>
-
-    {/* العنوان */}
     <h2 className="text-4xl font-extrabold text-gray-900 mb-6">
       Revolutionizing Investment Connections
     </h2>
-
-    {/* الفقرة */}
     <p className="text-gray-600 text-xl leading-relaxed">
       SmartBidder is an innovative platform that leverages artificial intelligence to create meaningful connections between entrepreneurs 
       with groundbreaking ideas and investors seeking promising opportunities. Our AI-enhanced matching algorithms analyze projects and investor 
@@ -245,8 +256,6 @@ useEffect(() => {
     </p>
   </div>
 </section>
-
-{/* choose your role section */}
    <section className="py-20 bg-white dark:bg-gray-900 px-4 transition-colors duration-300">
   <div className="max-w-7xl mx-auto text-center mb-12">
     <motion.h2
@@ -327,8 +336,6 @@ useEffect(() => {
     </motion.div>
   </div>
 </section>
-
-{/* features section */}
 <section className="py-20 px-4 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
   <div className="max-w-7xl mx-auto text-center mb-12">
     <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Platform Features</h2>
@@ -367,7 +374,7 @@ useEffect(() => {
       <div
         key={i}
         className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center shadow transition-all transform hover:scale-105 hover:shadow-lg relative overflow-hidden
-                   after:absolute after:bottom-0 after:left-0 after:h-[4px] after:w-0 hover:after:w-full after:bg-emerald-500 after:transition-all after:duration-300"
+        after:absolute after:bottom-0 after:left-0 after:h-[4px] after:w-0 hover:after:w-full after:bg-emerald-500 after:transition-all after:duration-300"
       >
         <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mx-auto mb-6">
           {feat.icon}
@@ -395,7 +402,7 @@ useEffect(() => {
             : "text-gray-500 dark:text-gray-300 hover:text-emerald-600"
         }`}
       >
-        Top Projects
+        Top Project Owners
       </button>
       <button
         onClick={() => setTab("investors")}
@@ -410,197 +417,115 @@ useEffect(() => {
     </div>
   </div>
 
-  {tab === "projects" && (
-    <div className="relative max-w-7xl mx-auto">
-      <div className="flex justify-end mb-4 px-4 gap-2">
-        <button
-          onClick={() => {
-            const container = document.getElementById("projects-scroll");
-            container.scrollBy({ left: -300, behavior: "smooth" });
-          }}
-          className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-emerald-500 hover:text-white transition"
-        >
-          ←
-        </button>
-        <button
-          onClick={() => {
-            const container = document.getElementById("projects-scroll");
-            container.scrollBy({ left: 300, behavior: "smooth" });
-          }}
-          className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-emerald-500 hover:text-white transition"
-        >
-          →
-        </button>
-      </div>
-
-      <div
-        id="projects-scroll"
-        className="flex gap-6 overflow-x-scroll px-4 scrollbar-hide scroll-smooth snap-x snap-mandatory"
+{tab === "projects" && (
+  <div className="relative max-w-7xl mx-auto">
+    <div className="flex justify-end mb-4 px-4 gap-2">
+      <button
+        onClick={() => {
+          const container = document.getElementById("projects-scroll")
+          container.scrollBy({ left: -300, behavior: "smooth" })
+        }}
+        className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-emerald-500 hover:text-white transition"
       >
-        {[
-          {
-            title: "EcoTech Solutions",
-            desc: "Innovative solar panel technology with 40% higher efficiency than market standards.",
-            tag: "Clean Energy",
-            goal: "$2.5M",
-            percent: 75,
-          },
-          {
-            title: "MediSync",
-            desc: "AI-powered diagnostic tool for early detection of cardiovascular diseases.",
-            tag: "Healthcare",
-            goal: "$1.8M",
-            percent: 60,
-          },
-          {
-            title: "UrbanFarm",
-            desc: "Vertical farming solution for urban environments with minimal water consumption.",
-            tag: "AgriTech",
-            goal: "$3.2M",
-            percent: 85,
-          },
-          {
-            title: "FinSecure",
-            desc: "Blockchain-based security system for financial transactions with zero fraud incidents.",
-            tag: "FinTech",
-            goal: "$1.5M",
-            percent: 45,
-          },
-          {
-            title: "AquaPure",
-            desc: "Revolutionary water purification system using nano-filtration technology.",
-            tag: "CleanTech",
-            goal: "$2.1M",
-            percent: 65,
-          },
-          {
-            title: "RoboAssist",
-            desc: "AI-powered robotic assistant for elderly care and medical monitoring.",
-            tag: "Robotics",
-            goal: "$3.5M",
-            percent: 80,
-          },
-        ].map((project, index) => (
-          <div
-            key={index}
-            className="min-w-[270px] max-w-[270px] bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.03] group snap-start"
-          >
-            <div className="w-full h-32 bg-gray-100 dark:bg-gray-700 rounded-lg mb-4"></div>
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-gray-900 dark:text-white">{project.title}</h3>
-              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
-                {project.tag}
-              </span>
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{project.desc}</p>
-            <div className="text-sm text-gray-700 dark:text-gray-300 font-medium">
-              Funding Goal: {project.goal}
-              <span className="float-right">{project.percent}%</span>
-            </div>
-            <div className="w-full h-1 mt-2 rounded-full bg-gray-200 dark:bg-gray-700">
-              <div
-                className="h-full rounded-full bg-emerald-500 transition-all duration-300 group-hover:bg-emerald-600"
-                style={{ width: `${project.percent}%` }}
-              ></div>
-            </div>
-          </div>
-        ))}
-      </div>
+        ←
+      </button>
+      <button
+        onClick={() => {
+          const container = document.getElementById("projects-scroll")
+          container.scrollBy({ left: 300, behavior: "smooth" })
+        }}
+        className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-emerald-500 hover:text-white transition"
+      >
+        →
+      </button>
     </div>
-  )}
+
+    <div
+      id="projects-scroll"
+      className="flex gap-6 overflow-x-scroll px-4 scrollbar-hide scroll-smooth snap-x snap-mandatory"
+    >
+    {topProjectOwners.map((owner, index) => (
+  <div
+    key={index}
+    className="min-w-[270px] max-w-[270px] bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.03] group snap-start text-center"
+  >
+    <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700 mx-auto mb-4 flex items-center justify-center overflow-hidden">
+      {owner.profile_picture_url ? (
+        <img
+          src={owner.profile_picture_url}
+          alt={owner.user.full_name}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <span className="text-gray-400 text-2xl">👤</span>
+      )}
+    </div>
+    <h3 className="font-bold mb-1 text-gray-900 dark:text-white">
+      {owner.user.full_name}
+    </h3>
+  </div>
+))}
+
+    </div>
+  </div>
+)}
 
   {tab === "investors" && (
-    <div className="relative max-w-7xl mx-auto">
-      <div className="flex justify-end mb-4 px-4 gap-2">
-        <button
-          onClick={() => {
-            const container = document.getElementById("investor-scroll");
-            container.scrollBy({ left: -300, behavior: "smooth" });
-          }}
-          className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-emerald-500 hover:text-white transition"
-        >
-          ←
-        </button>
-        <button
-          onClick={() => {
-            const container = document.getElementById("investor-scroll");
-            container.scrollBy({ left: 300, behavior: "smooth" });
-          }}
-          className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-emerald-500 hover:text-white transition"
-        >
-          →
-        </button>
-      </div>
-
-      <div
-        id="investor-scroll"
-        className="flex gap-6 overflow-x-scroll scroll-smooth snap-x snap-mandatory px-4 scrollbar-hide"
+  <div className="relative max-w-7xl mx-auto">
+    <div className="flex justify-end mb-4 px-4 gap-2">
+      <button
+        onClick={() => {
+          const container = document.getElementById("investor-scroll");
+          container.scrollBy({ left: -300, behavior: "smooth" });
+        }}
+        className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-emerald-500 hover:text-white transition"
       >
-        {[
-          {
-            name: "Green Future Capital",
-            sectors: "Sustainability, Clean Energy",
-            investments: 24,
-            rate: "92%",
-          },
-          {
-            name: "Horizon Ventures",
-            sectors: "Technology, Healthcare",
-            investments: 36,
-            rate: "88%",
-          },
-          {
-            name: "Innovation Partners",
-            sectors: "AI, Robotics, IoT",
-            investments: 18,
-            rate: "94%",
-          },
-          {
-            name: "Global Growth Fund",
-            sectors: "Diverse Industries",
-            investments: 42,
-            rate: "85%",
-          },
-          {
-            name: "NextVision Capital",
-            sectors: "FinTech, SaaS",
-            investments: 30,
-            rate: "90%",
-          },
-        ].map((investor, i) => (
-          <div
-            key={i}
-            className="min-w-[270px] max-w-[270px] bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.03] group snap-start text-center"
-          >
-            <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700 mx-auto mb-4 flex items-center justify-center transition-all duration-300 group-hover:ring-4 group-hover:ring-emerald-500">
-              <span className="text-gray-400 text-2xl">👤</span>
-            </div>
-            <h3 className="font-bold mb-1 text-gray-900 dark:text-white">{investor.name}</h3>
-            <p className="text-sm text-emerald-600 mb-4">{investor.sectors}</p>
-            <div className="flex justify-between text-sm font-medium text-gray-700 dark:text-gray-300 px-4">
-              <div>
-                <div>{investor.investments}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Investments</div>
-              </div>
-              <div>
-                <div>{investor.rate}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Success Rate</div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+        ←
+      </button>
+      <button
+        onClick={() => {
+          const container = document.getElementById("investor-scroll");
+          container.scrollBy({ left: 300, behavior: "smooth" });
+        }}
+        className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-emerald-500 hover:text-white transition"
+      >
+        →
+      </button>
     </div>
-  )}
+
+    <div
+      id="investor-scroll"
+      className="flex gap-6 overflow-x-scroll scroll-smooth snap-x snap-mandatory px-4 scrollbar-hide"
+    >
+      {topInvestors.map((investor, i) => (
+        <div
+          key={investor.id}
+          className="min-w-[270px] max-w-[270px] bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.03] group snap-start text-center"
+        >
+          <div className="w-20 h-20 rounded-full overflow-hidden shadow mx-auto mb-4 bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+            {investor.profile_picture ? (
+              <img
+                src={investor.profile_picture}
+                alt={investor.user.full_name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-gray-400 text-2xl">👤</span>
+            )}
+          </div>
+          <h3 className="font-bold mb-1 text-gray-900 dark:text-white">
+            {investor.user.full_name}
+          </h3>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
 </section>
-
-
-{/* demo section */}
 
 <section className="py-20 px-4 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
   <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-    
-    {/* النص */}
     <div>
       <h2 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Platform Preview</h2>
       <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
@@ -613,11 +538,7 @@ useEffect(() => {
         <li>✅ Advanced analytics and reporting tools</li>
       </ul>
     </div>
-
-    {/* الفيديو + الدوائر */}
     <div className="relative w-full h-[420px] bg-gray-200 dark:bg-gray-700 rounded-2xl border-4 border-white dark:border-gray-800 flex items-center justify-center text-gray-400 dark:text-gray-200 text-xl shadow-lg overflow-hidden">
-      
-      {/* 👇 الفيديو (مؤقتًا فارغ حتى تضيف src لاحقًا) */}
       <video
         className="w-full h-full object-cover rounded-2xl z-10"
         autoPlay
@@ -625,21 +546,15 @@ useEffect(() => {
         muted
         playsInline
       >
-        <source src="/videos/preview.mp4" type="video/mp4" />
+        <source src="/Demo.mp4" type="video/mp4" />
+
         Your browser does not support the video tag.
       </video>
-
-      {/* دائرة سفلية يسار */}
       <div className="absolute bottom-[-40px] left-[-40px] w-36 h-36 bg-emerald-300 opacity-30 rounded-full z-0"></div>
-
-      {/* دائرة علوية يمين */}
       <div className="absolute top-[-30px] right-[-30px] w-24 h-24 bg-amber-300 opacity-30 rounded-full z-0"></div>
     </div>
   </div>
 </section>
-
-
-{/* join section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="bg-gradient-to-r from-blue-900 to-emerald-800 rounded-2xl overflow-hidden shadow-xl">
@@ -659,11 +574,7 @@ useEffect(() => {
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm text-gray-400">© 2024 SmartBidder. All rights reserved. Built for entrepreneurs and investors.</p>
-        </div>
-      </footer>
+     <Footer/>
     </div>
   )
 }

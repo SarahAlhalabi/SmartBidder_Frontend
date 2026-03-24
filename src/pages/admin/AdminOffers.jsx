@@ -159,7 +159,6 @@ const [editForm, setEditForm] = useState({
     Show Negotiation
   </button>
 </div>
-
                   </div>
                 </div>
               </div>
@@ -197,7 +196,6 @@ const [editForm, setEditForm] = useState({
     </div>
   </div>
 )}
-
       </div>
     </div>
   );

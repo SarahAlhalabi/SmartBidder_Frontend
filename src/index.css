@@ -12,8 +12,6 @@
   body {
     @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300;
   }
-
-  /* Custom CSS Variables for Dark Mode */
   :root {
     --primary-50: #eff6ff;
     --primary-100: #dbeafe;
@@ -108,7 +106,6 @@
   }
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -125,7 +122,7 @@
   @apply from-blue-600 to-indigo-700;
 }
 
-/* RTL Support */
+
 [dir="rtl"] {
   text-align: right;
 }
@@ -134,12 +131,12 @@
   text-align: left;
 }
 
-/* Loading animations */
+
 .skeleton {
   @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
 }
 
-/* Responsive utilities */
+
 .container-full {
   @apply w-full min-h-screen;
 }
@@ -148,18 +145,18 @@
   @apply flex-1 p-6 lg:p-8 xl:p-10;
 }
 
-/* Enhanced focus styles for accessibility */
+
 .focus-ring {
   @apply focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800;
 }
-/* إخفاء شريط التمرير الأفقي فقط داخل عناصر معينة */
-/* لإخفاء شريط التمرير */
+
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none;     
 }.icon {
   fill: #777;
   width: 1rem;

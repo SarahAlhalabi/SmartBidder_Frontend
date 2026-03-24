@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import Header from "../../components/common/Header"
+import Footer from "../../components/common/Footer"
 import toast, { Toaster } from "react-hot-toast"
 import axios from "axios"
 
@@ -78,15 +79,16 @@ const EditInvestorProfile = () => {
         <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 space-y-6">
           <div className="flex items-center space-x-6">
             <div className="shrink-0">
-              <img
-                className="h-16 w-16 object-cover rounded-full"
-                src={
-                  formData.profile_picture
-                    ? URL.createObjectURL(formData.profile_picture)
-                    : user?.profile_picture || "/placeholder.svg"
-                }
-                alt="Current profile"
-              />
+             <img
+  className="h-16 w-16 object-cover rounded-full"
+  src={
+    formData.profile_picture instanceof File
+      ? URL.createObjectURL(formData.profile_picture)
+      : formData.profile_picture || user?.profile_picture || "/placeholder.svg"
+  }
+  alt="Current profile"
+/>
+
             </div>
             <label className="block">
               <span className="text-sm text-gray-700 dark:text-gray-300">Upload New Picture</span>
@@ -110,7 +112,9 @@ const EditInvestorProfile = () => {
 
          
           <div className="text-right">
-            <button type="submit" className="inline-flex items-center px-6 py-2 bg-emerald-600 text-white text-sm font-medium rounded-md shadow hover:bg-emerald-700 transition">
+            <button type="submit"   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-2xl shadow transition"
+>
+
               Save Changes
             </button>
           </div>
@@ -143,6 +147,7 @@ const InputFile = ({ label, name, onChange }) => (
       onChange={onChange}
       className="mt-1 w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
     />
+    <Footer/>
   </div>
 )
 

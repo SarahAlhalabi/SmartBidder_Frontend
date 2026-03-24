@@ -25,18 +25,14 @@ const confirmDelete = async () => {
     if (!response.ok) throw new Error("Failed to delete project");
 
     setToast({ message: "Project deleted successfully", type: "success" });
-
-    // الانتقال بعد فترة قصيرة لعرض التوست
     setTimeout(() => {
-      navigate("/admin/review-projects"); // ✅ التوجيه الصحيح
+      navigate("/admin/review-projects");
     }, 1500);
 
   } catch (error) {
     setToast({ message: error.message, type: "error" });
   }
 };
-
-
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
 const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -51,9 +47,9 @@ const [recentOffers, setRecentOffers] = useState([]);
     const allOffers = await response.json();
     
     const filtered = allOffers
-      .filter((offer) => offer.project_title === project.title) // فلترة حسب المشروع
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // الأحدث أولاً
-      .slice(0, 3); // فقط 3 عروض
+      .filter((offer) => offer.project_title === project.title)
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      .slice(0, 3); 
 
     setRecentOffers(filtered);
   } catch (error) {
@@ -76,8 +72,6 @@ useEffect(() => {
         },
       });
       const data = await response.json();
-
-      // ملفات تجريبية مؤقتة (يمكن حذفها لاحقًا)
       data.files = [
         {
           id: 1,
@@ -94,7 +88,7 @@ useEffect(() => {
       ];
 
       setProject(data);
-      setOfferData({ status: data.status }); // تعيين الحالة من المشروع
+      setOfferData({ status: data.status });
       console.log("📂 Files received:", data.files);
     } catch (error) {
       console.error("Error loading project:", error);
@@ -224,7 +218,6 @@ useEffect(() => {
                   <span>{project.readiness_level}</span>
                 </div>
               </div>
- {/* Project Documents */}
 {project.files && project.files.length > 0 && (
   <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-4 mt-6">
     <h2 className="text-xl font-semibold">Project Documents</h2>
@@ -237,7 +230,6 @@ useEffect(() => {
           docx: "📝",
           xlsx: "📈"
         }[ext] || "📁";
-
         return (
           <li key={file.id} className="py-3 flex justify-between items-center">
             <div className="flex items-center gap-3">
@@ -263,8 +255,6 @@ useEffect(() => {
     </ul>
   </div>
 )}
-
-
             </div>
           </div>
 
@@ -293,8 +283,6 @@ useEffect(() => {
     }}
   ></div>
 </div>
-
-
                 <div className="text-center text-sm">
                   {Math.round(((project.feasibility_study?.current_revenue || 0) / (project.feasibility_study?.funding_required || 1)) * 100)}% funded
                 </div>
@@ -340,9 +328,7 @@ useEffect(() => {
 >
   Delete
 </button>
-
 </div>
-
             </div>
 
            <div className="card bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
@@ -370,7 +356,6 @@ useEffect(() => {
     </ul>
   )}
 </div>
-  
           </div>
         </div>
       </div>
@@ -411,7 +396,7 @@ useEffect(() => {
             if (!response.ok) throw new Error("Failed to update project");
             setToast({ message: "Project updated successfully", type: "success" });
             setShowOfferModal(false);
-            fetchProject(); // تحديث البيانات بعد التعديل
+            fetchProject(); 
           } catch (error) {
             setToast({ message: error.message, type: "error" });
           }
@@ -419,7 +404,6 @@ useEffect(() => {
         }}
         className="space-y-4"
       >
-        {/* Project Fields */}
         {["title", "description", "idea_summary", "problem_solving", "category", "readiness_level"].map((field) => (
           <div key={field}>
             <label className="block text-sm font-medium mb-1 capitalize">{field.replace("_", " ")}</label>
@@ -432,8 +416,6 @@ useEffect(() => {
             />
           </div>
         ))}
-
-        {/* Status Dropdown */}
         <div>
           <label className="block text-sm font-medium mb-1">Status</label>
           <select
@@ -447,8 +429,6 @@ useEffect(() => {
             <option value="closed">Closed</option>
           </select>
         </div>
-
-        {/* Feasibility Study Fields */}
         {project.feasibility_study &&
           [
             "funding_required",
@@ -503,7 +483,6 @@ useEffect(() => {
     </div>
   </div>
 )}
-
     </div>
   );
 };

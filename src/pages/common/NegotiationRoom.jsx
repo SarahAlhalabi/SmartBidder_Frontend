@@ -32,8 +32,6 @@ const NegotiationRoom = () => {
     ownership: "",
     terms: "",
   })
-
-  // Mock negotiation data - in real app, this would be fetched based on negotiationId
   const negotiation = {
     id: negotiationId,
     projectTitle: "AI-Powered E-commerce Platform",
@@ -128,7 +126,6 @@ const NegotiationRoom = () => {
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
-      // In real app, this would send the message via API
       console.log("Sending message:", newMessage)
       setNewMessage("")
     }
@@ -136,7 +133,6 @@ const NegotiationRoom = () => {
 
   const handleCounterOffer = () => {
     if (counterOfferData.amount && counterOfferData.ownership) {
-      // In real app, this would submit the counter offer via API
       console.log("Submitting counter offer:", counterOfferData)
       setShowCounterOffer(false)
       setCounterOfferData({ amount: "", ownership: "", terms: "" })
@@ -144,12 +140,10 @@ const NegotiationRoom = () => {
   }
 
   const handleAcceptOffer = () => {
-    // In real app, this would accept the current offer via API
     console.log("Accepting current offer")
   }
 
   const handleRejectOffer = () => {
-    // In real app, this would reject the current offer via API
     console.log("Rejecting current offer")
   }
 
@@ -168,7 +162,6 @@ const NegotiationRoom = () => {
       <Header />
 
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="mb-6">
           <button
             onClick={() => navigate(-1)}
@@ -191,10 +184,8 @@ const NegotiationRoom = () => {
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-          {/* Chat Area */}
           <div className="xl:col-span-3">
             <div className="card h-[600px] flex flex-col">
-              {/* Chat Header */}
               <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -223,8 +214,6 @@ const NegotiationRoom = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Messages */}
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {negotiation.messages.map((message) => {
                   const isCurrentUser = message.senderId === user?.id || message.senderRole === user?.role
@@ -303,8 +292,6 @@ const NegotiationRoom = () => {
                 })}
                 <div ref={messagesEndRef} />
               </div>
-
-              {/* Message Input */}
               <div className="p-6 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex space-x-4">
                   <div className="flex-1">
@@ -353,10 +340,7 @@ const NegotiationRoom = () => {
               </div>
             </div>
           </div>
-
-          {/* Sidebar */}
           <div className="xl:col-span-1 space-y-6">
-            {/* Negotiation Summary */}
             <div className="card">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">{t("negotiationSummary")}</h3>
 
@@ -407,8 +391,6 @@ const NegotiationRoom = () => {
                 </div>
               </div>
             </div>
-
-            {/* Security Notice */}
             <div className="card bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700">
               <div className="flex items-start space-x-3">
                 <Shield className="w-6 h-6 text-green-600 dark:text-green-400 mt-1" />
@@ -421,8 +403,6 @@ const NegotiationRoom = () => {
                 </div>
               </div>
             </div>
-
-            {/* Guidelines */}
             <div className="card">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Negotiation Guidelines</h3>
               <div className="space-y-3 text-sm">
@@ -449,8 +429,6 @@ const NegotiationRoom = () => {
           </div>
         </div>
       </div>
-
-      {/* Counter Offer Modal */}
       {showCounterOffer && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">

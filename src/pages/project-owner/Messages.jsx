@@ -1,13 +1,17 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Send, Search, MessageSquare,MessageCircle } from "lucide-react"
+import { useSearchParams } from "react-router-dom"
+import { Send, Search, MessageSquare } from "lucide-react"
 import { useLanguage } from "../../contexts/LanguageContext"
 import Header from "../../components/common/Header"
 import axios from "axios"
 
 const Messages = () => {
   const { t, isRTL } = useLanguage()
+  const [searchParams] = useSearchParams()
+  const offerIdFromUrl = searchParams.get("offer")
+
   const [selectedConversation, setSelectedConversation] = useState(null)
   const [newMessage, setNewMessage] = useState("")
   const [searchTerm, setSearchTerm] = useState("")
@@ -23,13 +27,19 @@ const Messages = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         setConversations(res.data || [])
+        if (offerIdFromUrl) {
+          const conv = res.data.find(c => c.offer_id.toString() === offerIdFromUrl)
+          if (conv) {
+            loadConversation(conv)
+          }
+        }
       } catch (err) {
         console.error("❌ Error fetching conversations", err)
       }
     }
 
     fetchConversations()
-  }, [])
+  }, [offerIdFromUrl])
 
   const loadConversation = async (conversation) => {
     if (!conversation) return
@@ -101,22 +111,18 @@ const Messages = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <div className="max-w-screen-xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-         <div>
-
-    <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
-  <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
-    <MessageSquare  className="h-6 w-6" />
-  </div>
-
-  {/* نص العنوان والوصف */}
-  <div>
-    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Messages</h1>
-    <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
-  </div>
-</div>
-                <p className="text-m text-gray-500 -mt-6 mb-6 px-16">Communicate with users and manage negotiations</p>
+        <div>
+          <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
+            <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
+              <MessageSquare className="h-6 w-6" />
             </div>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Messages</h1>
+              <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
+            </div>
+          </div>
+          <p className="text-m text-gray-500 -mt-6 mb-6 px-16">Communicate with users and manage negotiations</p>
+        </div>
 
         <div className="flex flex-col lg:flex-row gap-6" style={{ height: "75vh" }}>
           {/* Sidebar */}
@@ -150,10 +156,10 @@ const Messages = () => {
                     >
                       <div className="flex items-start space-x-3">
                         <img
-  src={conversation.profile_picture || "/placeholder.svg"}
-  alt={conversation.other_user_full_name}
-  className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500"
-/>
+                          src={conversation.profile_picture || "/placeholder.svg"}
+                          alt={conversation.other_user_full_name}
+                          className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500"
+                        />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
                             <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
@@ -178,8 +184,6 @@ const Messages = () => {
               </div>
             </div>
           </div>
-
-          {/* Chat Area */}
           <div className="flex-1">
             <div className="bg-white dark:bg-gray-800 shadow rounded-xl h-full flex flex-col">
               {selectedConversation ? (
@@ -187,10 +191,10 @@ const Messages = () => {
                   <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center space-x-3">
                       <img
-  src={selectedConversation.profile_picture || "/placeholder.svg"}
-  alt={selectedConversation.other_user_full_name}
-  className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500"
-/>
+                        src={selectedConversation.profile_picture || "/placeholder.svg"}
+                        alt={selectedConversation.other_user_full_name}
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500"
+                      />
                       <div>
                         <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                           {selectedConversation.other_user_full_name}

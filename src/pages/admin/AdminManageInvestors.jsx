@@ -74,39 +74,40 @@ const [editSubmitting, setEditSubmitting] = useState(false)
         }))
     }
 
-    const handleSubmit = async () => {
-        try {
-        setSubmitting(true)
-        const token = localStorage.getItem("accessToken")
-        const form = new FormData()
+  const handleSubmit = async () => {
+    try {
+        setSubmitting(true);
+        const token = localStorage.getItem("accessToken");
+        const form = new FormData();
+
         for (let key in formData) {
-    if (formData[key] !== null && formData[key] !== undefined) {
-        form.append(key, formData[key])
-    }
-    }
+            if (formData[key] !== null && formData[key] !== undefined && formData[key] !== "") {
+                form.append(key, formData[key]);
+            }
+        }
 
+        console.log("Submitting Form Data:");
         for (let [key, value] of form.entries()) {
-    console.log(`${key}:`, value);
-    }
+            console.log(`${key}:`, value);
+        }
 
-        await axios.post(
+        const res = await axios.post(
             "http://127.0.0.1:8000/adminAccounts/create-investor/",
             form,
             { headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" } }
-        )
-        toast.success("Investor created successfully!")
+        );
 
-        fetchInvestors()
-        handleModalClose()
-        } catch (error) {
-            console.log(error.response?.data);
-    
-        alert("Failed to create investor")
-        console.error(error)
-        } finally {
-        setSubmitting(false)
-        }
+        toast.success("Investor created successfully!");
+        fetchInvestors();
+        handleModalClose();
+    } catch (error) {
+        console.error("Error creating investor:", error.response?.data || error.message);
+        toast.error("Failed to create investor");
+    } finally {
+        setSubmitting(false);
     }
+};
+
 
     useEffect(() => {
         fetchInvestors()
@@ -220,12 +221,9 @@ const handleEditSubmit = async () => {
             <div>
 
     <div className="w-full max-w-6xl -mt-14 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <UserCog className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
       Manage <span className="text-blue-600">Investors</span>
@@ -286,8 +284,6 @@ const handleEditSubmit = async () => {
                     <th className="px-6 py-3 text-right">Actions</th>
                     </tr>
                 </thead>
-              
-
                 <tbody>
                     {filteredInvestors.map((inv) => (
                     <tr key={inv.id} className="border-t hover:bg-blue-50/50 hover:shadow-md transition duration-150">
@@ -330,8 +326,6 @@ const handleEditSubmit = async () => {
             )}
             </div>
         </div>
-
-        {/* ✅ Modal for Add Investor */}
         {showModal && (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
         <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6 animate-fade-in">
@@ -390,8 +384,6 @@ const handleEditSubmit = async () => {
 
             </div>
         </div>
-
-        {/* Buttons */}
         <div className="flex justify-end mt-6 gap-3">
             <button onClick={handleModalClose}
             className="px-4 py-2 rounded-md border border-gray-300 text-sm hover:bg-gray-100">
@@ -454,8 +446,6 @@ const handleEditSubmit = async () => {
   <label className="text-sm text-gray-600 mb-1 block">Bio</label>
   <textarea name="bio" value={editFormData.bio} onChange={(e) => setEditFormData({ ...editFormData, bio: e.target.value })} className="w-full px-4 py-2 border rounded-lg text-sm" />
 </div>
-
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div>
           <label className="text-sm text-gray-600">Profile Picture</label>

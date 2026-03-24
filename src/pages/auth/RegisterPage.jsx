@@ -36,10 +36,9 @@ const [formData, setFormData] = useState({
   profilePicture: null,
   idCardPicture: null,
   termsAccepted: false,
-  company_name: "",              // 👈 أضف هذا
+  company_name: "",  
   commercial_register: "",
-  commercial_register_image: null, // 👈 أضف هذا السطر
-       // 👈 وأضف هذا أيضًا
+  commercial_register_image: null,
 })
 
   const [profilePreview, setProfilePreview] = useState(null)
@@ -54,8 +53,6 @@ const [formData, setFormData] = useState({
         ...prev,
         [name]: file,
       }))
-
-      // Create preview for images
       if (file && file.type.startsWith("image/")) {
         const reader = new FileReader()
         reader.onloadend = () => {
@@ -91,16 +88,12 @@ const handleSubmit = async (e) => {
   form.append("bio", formData.bio)
   form.append("full_name", formData.fullName)
   form.append("terms_agreed", formData.termsAccepted ? "true" : "false")
-
-  // صور
   if (formData.profilePicture) {
     form.append("profile_picture", formData.profilePicture)
   }
   if (formData.idCardPicture) {
     form.append("id_card_picture", formData.idCardPicture)
   }
-
-  // إذا كان المستثمر ولديه شركة: أضف الحقول الخاصة
   if (formData.role === "investor" && hasCompany === true) {
     if (formData.company_name) {
       form.append("company_name", formData.company_name)
@@ -115,8 +108,6 @@ const handleSubmit = async (e) => {
       form.append("commercial_register_image", formData.commercial_register_image)
     }
   }
-
-  // تحديد الرابط المناسب حسب الدور
   const endpoint =
     formData.role === "investor"
       ? "http://127.0.0.1:8000/accounts/register/investor/"
@@ -150,15 +141,10 @@ const handleSubmit = async (e) => {
     alert("Something went wrong. Please try again later.")
   }
 }
-
-
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
   const navigate = useNavigate()
-
-
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -183,7 +169,6 @@ const handleSubmit = async (e) => {
           </h2>
 
          <form className="space-y-6" onSubmit={handleSubmit} encType="multipart/form-data">
-            {/* Role Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {direction === "rtl" ? "اختر دورك" : "Choose Your Role"}
@@ -270,8 +255,6 @@ const handleSubmit = async (e) => {
                 </label>
               </div>
             </div>
-
-            {/* Personal Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -291,7 +274,6 @@ const handleSubmit = async (e) => {
                   />
                 </div>
               </div>
-
               <div>
                 <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   {direction === "rtl" ? "اسم المستخدم" : "Username"}
@@ -310,7 +292,6 @@ const handleSubmit = async (e) => {
                   />
                 </div>
               </div>
-
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   {direction === "rtl" ? "البريد الإلكتروني" : "Email"}
@@ -329,7 +310,6 @@ const handleSubmit = async (e) => {
                   />
                 </div>
               </div>
-
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   {direction === "rtl" ? "رقم الهاتف" : "Phone Number"}
@@ -409,10 +389,8 @@ const handleSubmit = async (e) => {
                 />
               </div>
             </div>
-            {/* سؤال: هل لديك شركة؟ */}
 {formData.role === "investor" && (
   <>
-    {/* سؤال: هل لديك شركة؟ */}
     <div className="mt-4">
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         {direction === "rtl" ? "هل لديك شركة؟" : "Do you have a company?"}
@@ -446,11 +424,8 @@ const handleSubmit = async (e) => {
         </label>
       </div>
     </div>
-
-    {/* الحقول الإضافية إذا كان لديه شركة */}
     {hasCompany && (
       <>
-        {/* اسم الشركة */}
         <div className="mt-4">
           <label htmlFor="company_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             {direction === "rtl" ? "اسم الشركة" : "Company Name"}
@@ -466,8 +441,6 @@ const handleSubmit = async (e) => {
             placeholder={direction === "rtl" ? "أدخل اسم الشركة" : "Enter company name"}
           />
         </div>
-
-        {/* رقم السجل التجاري */}
         <div className="mt-4">
           <label htmlFor="commercial_register" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             {direction === "rtl" ? "رقم السجل التجاري" : "Commercial Register Number"}
@@ -483,8 +456,6 @@ const handleSubmit = async (e) => {
             placeholder={direction === "rtl" ? "أدخل رقم السجل التجاري" : "Enter commercial register number"}
           />
         </div>
-
-        {/* صورة السجل التجاري */}
         <div className="mt-4">
           <label htmlFor="commercial_register_image" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {direction === "rtl" ? "صورة السجل التجاري" : "Commercial Register Image"}
@@ -511,7 +482,6 @@ const handleSubmit = async (e) => {
 
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Profile Picture Upload */}
 <div>
   <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
     {direction === "rtl" ? "الصورة الشخصية" : "Profile Picture"}
@@ -561,9 +531,6 @@ const handleSubmit = async (e) => {
     />
   </label>
 </div>
-
-              {/* ID Card Upload */}
-              {/* ID Card Upload */}
 <div>
   <label htmlFor="idCardPicture" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
     {direction === "rtl" ? "صورة الهوية" : "ID Card Picture"}
@@ -614,7 +581,6 @@ const handleSubmit = async (e) => {
   </label>
 </div>
               </div>
-                        {/* Terms and Conditions */}
             <div className="flex items-start">
               <div className="flex items-center h-5">
                 <input

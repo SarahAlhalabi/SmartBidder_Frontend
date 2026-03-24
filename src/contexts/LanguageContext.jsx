@@ -14,13 +14,10 @@ export const useLanguage = () => {
 
 const translations = {
   en: {
-    // Navigation
     home: "Home",
     login: "Login",
     register: "Register",
     language: "Language",
-
-    // Landing Page
     welcomeTitle: "Welcome to Investment Platform",
     welcomeSubtitle: "Connect innovative projects with passionate investors",
     getStarted: "Get Started",
@@ -29,8 +26,6 @@ const translations = {
     forProjectOwners: "For Project Owners",
     investorDescription: "Discover and invest in promising projects that match your interests and goals.",
     projectOwnerDescription: "Showcase your project and connect with investors who believe in your vision.",
-
-    // Features
     featuresTitle: "Why Choose Our Platform?",
     secureTransactions: "Secure Transactions",
     secureTransactionsDesc: "Your investments are protected with bank-level security.",
@@ -38,8 +33,6 @@ const translations = {
     diverseProjectsDesc: "Explore projects across various industries and sectors.",
     expertSupport: "Expert Support",
     expertSupportDesc: "Get guidance from our team of investment professionals.",
-
-    // Auth
     email: "Email",
     password: "Password",
     confirmPassword: "Confirm Password",
@@ -55,13 +48,9 @@ const translations = {
     alreadyHaveAccount: "Already have an account?",
     signUp: "Sign up",
     signIn: "Sign in",
-
-    // Dashboard
     dashboard: "Dashboard",
     welcome: "Welcome",
     logout: "Logout",
-
-    // Project Owner Features
     createProject: "Create Project",
     myProjects: "My Projects",
     projectTitle: "Project Title",
@@ -105,8 +94,6 @@ const translations = {
     offerRejected: "Offer rejected successfully!",
     messageSent: "Message sent successfully!",
     ratingSubmitted: "Rating submitted successfully!",
-
-    // Investor Features
     browseProjects: "Browse Projects",
     projectDetails: "Project Details",
     submitOffer: "Submit Offer",
@@ -154,8 +141,6 @@ const translations = {
     approved: "Approved",
     rejected: "Rejected",
     withdrawn: "Withdrawn",
-
-    // Negotiation System
     secureNegotiation: "Secure Negotiation",
     negotiationRoom: "Negotiation Room",
     startNegotiation: "Start Negotiation",
@@ -177,8 +162,6 @@ const translations = {
     originalOffer: "Original Offer",
     currentOffer: "Current Offer",
     proposedTerms: "Proposed Terms",
-
-    // AI Chatbot
     aiAssistant: "AI Investment Assistant",
     askAI: "Ask AI Assistant",
     aiRecommendations: "AI Recommendations",
@@ -196,13 +179,10 @@ const translations = {
     aiAnalysisComplete: "Analysis complete",
   },
   ar: {
-    // Navigation
     home: "الرئيسية",
     login: "تسجيل الدخول",
     register: "إنشاء حساب",
     language: "اللغة",
-
-    // Landing Page
     welcomeTitle: "مرحباً بك في منصة الاستثمار",
     welcomeSubtitle: "ربط المشاريع المبتكرة بالمستثمرين المتحمسين",
     getStarted: "ابدأ الآن",
@@ -211,8 +191,6 @@ const translations = {
     forProjectOwners: "لأصحاب المشاريع",
     investorDescription: "اكتشف واستثمر في المشاريع الواعدة التي تتناسب مع اهتماماتك وأهدافك.",
     projectOwnerDescription: "اعرض مشروعك وتواصل مع المستثمرين الذين يؤمنون برؤيتك.",
-
-    // Features
     featuresTitle: "لماذا تختار منصتنا؟",
     secureTransactions: "معاملات آمنة",
     secureTransactionsDesc: "استثماراتك محمية بأمان مصرفي عالي المستوى.",
@@ -220,8 +198,6 @@ const translations = {
     diverseProjectsDesc: "استكشف المشاريع عبر مختلف الصناعات والقطاعات.",
     expertSupport: "دعم الخبراء",
     expertSupportDesc: "احصل على التوجيه من فريق المتخصصين في الاستثمار.",
-
-    // Auth
     email: "البريد الإلكتروني",
     password: "كلمة المرور",
     confirmPassword: "تأكيد كلمة المرور",
@@ -237,13 +213,9 @@ const translations = {
     alreadyHaveAccount: "لديك حساب بالفعل؟",
     signUp: "إنشاء حساب",
     signIn: "تسجيل الدخول",
-
-    // Dashboard
     dashboard: "لوحة التحكم",
     welcome: "مرحباً",
     logout: "تسجيل الخروج",
-
-    // Project Owner Features
     createProject: "إنشاء مشروع",
     myProjects: "مشاريعي",
     projectTitle: "عنوان المشروع",
@@ -287,8 +259,6 @@ const translations = {
     offerRejected: "تم رفض العرض بنجاح!",
     messageSent: "تم إرسال الرسالة بنجاح!",
     ratingSubmitted: "تم تقديم التقييم بنجاح!",
-
-    // Investor Features
     browseProjects: "تصفح المشاريع",
     projectDetails: "تفاصيل المشروع",
     submitOffer: "تقديم عرض",
@@ -336,8 +306,6 @@ const translations = {
     approved: "موافق عليه",
     rejected: "مرفوض",
     withdrawn: "مسحوب",
-
-    // Negotiation System
     secureNegotiation: "تفاوض آمن",
     negotiationRoom: "غرفة التفاوض",
     startNegotiation: "بدء التفاوض",
@@ -359,8 +327,6 @@ const translations = {
     originalOffer: "العرض الأصلي",
     currentOffer: "العرض الحالي",
     proposedTerms: "الشروط المقترحة",
-
-    // AI Chatbot
     aiAssistant: "مساعد الاستثمار الذكي",
     askAI: "اسأل المساعد الذكي",
     aiRecommendations: "توصيات الذكاء الاصطناعي",

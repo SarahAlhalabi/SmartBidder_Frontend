@@ -26,8 +26,6 @@ const AdminDashboard = () => {
   const { t } = useLanguage()
   const { user } = useAuth()
   const navigate = useNavigate()
-
-  // تعريف جميع الـ hooks في البداية
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -132,12 +130,12 @@ const AdminDashboard = () => {
       },
       {
         title: "Content Moderation",
-        description: "Review flagged content and violations",
+        description: "Review  violations",
         icon: Shield,
         color: "from-red-500 to-red-600",
         bgColor: "bg-red-50 dark:bg-red-900/20",
         actions: [
-          { name: "Flagged Content", description: "Review content flagged by users", count: stats.flaggedContent },
+        
           { name: "Violation Reports", description: "Handle platform violation reports", count: 7 }
         ]
       }
@@ -175,7 +173,6 @@ const AdminDashboard = () => {
     />
     <div className="relative w-full px-4 lg:px-20 py-20">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-        {/* Left Section */}
         <div className="flex-1 ">
           <div className="flex items-start gap-3 mb-4">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -201,35 +198,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-
-        {/* Right Section */}
         <div className="lg:flex-shrink-0">
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-2xl">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-slate-300 font-medium">System Health</span>
-              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Shield className="w-8 h-8 text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white"></div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-white mb-1">{stats.systemHealth}%</div>
-                <div className="text-sm text-emerald-400 font-medium">Operational</div>
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="w-full bg-slate-700 rounded-full h-2">
-                <div
-                  className="bg-gradient-to-r from-emerald-500 to-emerald-400 h-2 rounded-full"
-                  style={{ width: `${stats.systemHealth}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -237,15 +206,10 @@ const AdminDashboard = () => {
   </div>
         <div className="container-full">
           <div className="main-content">
-
-            {/* Analytics Table */}
 <div className="w-full max-w-6xl -mt-20 px-6 py-6 md:py-8 flex items-center gap-5 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <BarChart2 className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
       Platform <span className="text-blue-600">Insights</span> Overview
@@ -256,7 +220,6 @@ const AdminDashboard = () => {
 </div>
 
 <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden mb-12 transform scale-95">
-  {/* Table Header */}
   <div className="bg-gradient-to-r from-[#1e3a8a] via-[#1e40af] to-[#0f766e] px-8 py-6 shadow-md hover:shadow-xl transition-shadow duration-500">
     <div className="grid grid-cols-12 gap-6 items-center">
       <div className="col-span-5 pl-24">
@@ -273,14 +236,10 @@ const AdminDashboard = () => {
       </div>
     </div>
   </div>
-
-  {/* Table Body */}
   <div>
    {metrics.map((item, index) => {
     const IconComponent = item.icon;
     let hoverBorderColor = "";
-
-    // تعيين لون الإطار عند التمرير حسب المقياس
     if (item.metric === "Total Users") hoverBorderColor = "hover:border-blue-500";
     else if (item.metric === "Active Projects") hoverBorderColor = "hover:border-purple-500";
     else if (item.metric === "Total Investments") hoverBorderColor = "hover:border-emerald-500";
@@ -293,7 +252,6 @@ const AdminDashboard = () => {
           className={`px-8 py-8 group transition-all duration-300 hover:bg-gradient-to-r hover:from-slate-50 dark:hover:from-slate-800 hover:to-white dark:hover:to-slate-900 hover:shadow-xl border-b border-slate-100 dark:border-slate-700 border-l-4 border-transparent ${hoverBorderColor}`}
         >
           <div className="grid grid-cols-12 gap-6 items-center">
-            {/* Metric Column */}
             <div className="col-span-5">
               <div className="flex items-center gap-4">
                 <div className={`w-14 h-14 bg-gradient-to-br ${item.color.split(" ")[0]} ${item.color.split(" ")[1]} rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-transform duration-300`}>
@@ -310,8 +268,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-
-            {/* Value Column */}
             <div className="col-span-3">
               <div className="text-3xl font-bold text-slate-900 dark:text-white mb-1">{item.value}</div>
               <div className={`text-sm font-medium ${item.trend === "up"
@@ -323,8 +279,6 @@ const AdminDashboard = () => {
                 {item.percentage}
               </div>
             </div>
-
-            {/* Note Column */}
             <div className="col-span-3">
               <span className={`text-lg font-medium ${
                 item.note.includes("+")
@@ -334,8 +288,6 @@ const AdminDashboard = () => {
                 {item.note}
               </span>
             </div>
-
-            {/* Trend Column */}
             <div className="col-span-1 flex justify-center">
               {item.trend === "up" && (
                 <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-800/20 rounded-full flex items-center justify-center">
@@ -359,20 +311,11 @@ const AdminDashboard = () => {
     })}
   </div>
 </div>
-
-
-
-            
-
-            {/* Management Sections */}
             <div className="mb-8">
              <div className="w-full max-w-6xl -mt-10 px-6 py-6 md:py-8 flex items-center gap-5 bg-transparent">
-  {/* أيقونة */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <Users className="h-6 w-6" />
   </div>
-
-  {/* العنوان */}
   <div>
     <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
       Platform <span className="text-blue-600">Management</span>
@@ -380,11 +323,9 @@ const AdminDashboard = () => {
     <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
   </div>
 </div>
-
-             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
   {managementSections.map((section, index) => (
   <div key={index} className="card h-[500px] flex flex-col bg-white rounded-xl shadow-md p-6">
-  {/* العنوان + الوصف */}
   <div className="mb-6">
     <div className="flex items-center space-x-3 mb-4">
       <div className={`p-3 bg-gradient-to-r ${section.color} rounded-xl`}>
@@ -396,8 +337,6 @@ const AdminDashboard = () => {
       </div>
     </div>
   </div>
-
-  {/* الأزرار */}
   <div className="flex flex-col justify-between gap-4 flex-grow">
     {section.actions.map((action, actionIndex) => (
      <button
@@ -413,12 +352,9 @@ const AdminDashboard = () => {
 >
   <div className="flex items-center justify-between h-full">
     <div className="flex flex-col justify-center">
-      {/* ✅ عنوان أكبر وواضح */}
-      <div className="text-[18px] font-bold text-gray-900 dark:text-white leading-tight">
-        {action.name}
-      </div>
-
-      {/* ✅ وصف أصغر تحته مباشرة */}
+      <div className="text-[20px] lg:text-[22px] font-bold text-gray-900 dark:text-white leading-tight tracking-wide">
+  {action.name}
+</div>
       <div className="text-[13px] text-gray-500 dark:text-gray-400 mt-[4px]">
         {action.description}
       </div>
@@ -440,27 +376,20 @@ const AdminDashboard = () => {
   ))}
 </div>
 
-            </div>
-
-            {/* Recent Notifications */}
-            <div className="card">
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-full max-w-6xl -mt-8 px-6 py-6 md:py-8 flex items-center gap-5 bg-transparent">
-  {/* أيقونة  */}
+</div>
+<div className="card">
+<div className="flex items-center justify-between mb-6">
+<div className="w-full max-w-6xl -mt-8 px-6 py-6 md:py-8 flex items-center gap-5 bg-transparent">
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <BellDot className="h-6 w-6" />
   </div>
-
-  {/* العنوان  */} 
   <div>
     <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
       Notificatons
     </h1>
     <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
-  
   </div>
 </div>
-
                 <button onClick={() => navigate("/admin/notifications")} className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center">
                   View All <ArrowUpRight className="w-4 h-4 ml-1" />
                 </button>
@@ -470,8 +399,8 @@ const AdminDashboard = () => {
     <p className="text-gray-600 dark:text-gray-400">No notifications yet.</p>
   ) : (
     adminNotifications
-      .slice(-3) // آخر 3 عناصر
-      .reverse() // ترتيبها من الأحدث إلى الأقدم
+      .slice(-3)
+      .reverse() 
       .map((n) => (
         <div
           key={n.id}
@@ -487,7 +416,6 @@ const AdminDashboard = () => {
       ))
   )}
 </div>
-
             </div>
 
           </div>

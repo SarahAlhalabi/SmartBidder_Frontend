@@ -30,7 +30,6 @@ const LoginPage = () => {
   setIsLoading(true)
   const result = await login(formData.username, formData.password)
   if (result.success) {
-    // ✅ تخزين التوكن في localStorage
     localStorage.setItem("token", result.token)
 
     const role = result.user.role
@@ -49,8 +48,6 @@ const LoginPage = () => {
   }
   setIsLoading(false)
 }
-
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
       <nav className="bg-white dark:bg-gray-800 shadow-md w-full">

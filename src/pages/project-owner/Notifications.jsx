@@ -5,7 +5,7 @@ import { useLanguage } from "../../contexts/LanguageContext"
 import Header from "../../components/common/Header"
 import { useState, useEffect } from "react"
 import axios from "axios"
-
+import Footer from "../../components/common/Footer"
 const Notifications = () => {
   const { t, isRTL } = useLanguage()
   const [filter, setFilter] = useState("all")
@@ -20,14 +20,10 @@ useEffect(() => {
           Authorization: `Bearer ${token}`,
         },
       })
-
-      // نهيئ البيانات القادمة لتتناسب مع العرض
       const enrichedData = res.data.map((n) => {
         let icon = Bell
         let color = "text-blue-600"
         let bgColor = "bg-blue-100"
-
-        // تخصيص الأيقونات حسب نوع الرسالة
         if (n.message.includes("accepted")) {
           icon = Check
           color = "text-green-600"
@@ -81,8 +77,6 @@ const markAsRead = async (id) => {
         Authorization: `Bearer ${token}`,
       },
     })
-
-    // بعد نجاح الطلب، حدّث الواجهة
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     )
@@ -100,8 +94,6 @@ const markAsRead = async (id) => {
         Authorization: `Bearer ${token}`,
       },
     })
-
-    // بعد نجاح الطلب، عدّل الواجهة
     setNotifications((prev) =>
       prev.map((n) => ({ ...n, read: true }))
     )
@@ -149,12 +141,9 @@ const deleteNotification = async (id) => {
         <div>
 
     <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <BellDot  className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
       My <span className="text-blue-600">Notifications</span>
@@ -252,6 +241,7 @@ const deleteNotification = async (id) => {
 
        
       </div>
+      <Footer/>
     </div>
   )
 }

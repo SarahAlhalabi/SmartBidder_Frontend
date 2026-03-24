@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { Search, Filter, FileSearch } from "lucide-react"
 import { useLanguage } from "../../contexts/LanguageContext"
 import Header from "../../components/common/Header"
+import Footer from "../../components/common/Footer"
 
 const BrowseProjects = () => {
   const { t, isRTL } = useLanguage()
@@ -48,50 +49,45 @@ const BrowseProjects = () => {
     fetchProjects()
   }, [filters])
 
-const categories = [
-  { value: "", label: "All Categories" },
-  { value: "medical", label: "Medical" },
-  { value: "general_trade", label: "General Trade" },
-  { value: "construction", label: "Construction" },
-  { value: "business", label: "Business" },
-  { value: "other", label: "Other" },
-]
+  const categories = [
+    { value: "", label: "All Categories" },
+    { value: "medical", label: "Medical" },
+    { value: "general_trade", label: "General Trade" },
+    { value: "construction", label: "Construction" },
+    { value: "business", label: "Business" },
+    { value: "other", label: "Other" },
+  ]
 
-const handleFilterChange = (key, value) => {
-  setLoading(true); // 🔁 أضف هذا السطر
-  setFilters({ ...filters, [key]: value });
-}
-
-  const getRiskColor = (risk) => {
-    switch (risk) {
-      case "low": return "bg-green-100 text-green-800"
-      case "medium": return "bg-yellow-100 text-yellow-800"
-      case "high": return "bg-red-100 text-red-800"
-      default: return "bg-gray-100 text-gray-800"
-    }
+  const handleFilterChange = (key, value) => {
+    setLoading(true)
+    setFilters({ ...filters, [key]: value })
   }
+
+  const getImageUrl = (image) => {
+    if (!image) return null
+    if (image.startsWith("http")) return image
+    return `http://127.0.0.1:8000${image}`
+  }
+
+  const placeholderImage = "/placeholder.svg"
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
       <Header />
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-          <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
-  <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
-    <FileSearch className="h-6 w-6" />
-  </div>
+        <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
+          <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
+            <FileSearch className="h-6 w-6" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Browse <span className="text-blue-600">Projects</span>
+            </h1>
+            <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
+          </div>
+        </div>
 
-  {/* نص العنوان والوصف */}
-  <div>
-    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-      Browse <span className="text-blue-600">Projects</span>
-    </h1>
-    <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
-  </div>
-
-</div>
-  <p className="text-m text-gray-500 -mt-6 mb-6 px-16">Discover investment opportunities that match your interests</p>
-        
+        <p className="text-m text-gray-500 -mt-6 mb-6 px-16">Discover investment opportunities that match your interests</p>
 
         <div className="card mb-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
           <div className="flex flex-col space-y-4">
@@ -117,25 +113,45 @@ const handleFilterChange = (key, value) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
-                  <select className="input-field bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
-                    value={filters.category} onChange={(e) => handleFilterChange("category", e.target.value)}>
-                    {categories.map((cat) => <option key={cat.value} value={cat.value}>{cat.label}</option>)}
+                  <select
+                    className="input-field bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
+                    value={filters.category}
+                    onChange={(e) => handleFilterChange("category", e.target.value)}
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Min Amount</label>
-                  <input type="number" className="input-field bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600"
-                    placeholder="0" value={filters.minAmount} onChange={(e) => handleFilterChange("minAmount", e.target.value)} />
+                  <input
+                    type="number"
+                    className="input-field bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600"
+                    placeholder="0"
+                    value={filters.minAmount}
+                    onChange={(e) => handleFilterChange("minAmount", e.target.value)}
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Max Amount</label>
-                  <input type="number" className="input-field bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600"
-                    placeholder="100000" value={filters.maxAmount} onChange={(e) => handleFilterChange("maxAmount", e.target.value)} />
+                  <input
+                    type="number"
+                    className="input-field bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600"
+                    placeholder="100000"
+                    value={filters.maxAmount}
+                    onChange={(e) => handleFilterChange("maxAmount", e.target.value)}
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sort By</label>
-                  <select className="input-field bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
-                    value={filters.sortBy} onChange={(e) => handleFilterChange("sortBy", e.target.value)}>
+                  <select
+                    className="input-field bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100"
+                    value={filters.sortBy}
+                    onChange={(e) => handleFilterChange("sortBy", e.target.value)}
+                  >
                     <option value="newest">{t("newest")}</option>
                     <option value="rating">{t("highestRated")}</option>
                     <option value="funding">{t("mostFunded")}</option>
@@ -147,58 +163,91 @@ const handleFilterChange = (key, value) => {
           </div>
         </div>
 
-        {loading ? (
-          <p className="text-center text-gray-500">Loading projects...</p>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {projects.map((project) => (
-              <div key={project.id} className="card bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:shadow-lg transition-shadow p-6 rounded-xl">
-                <div className="relative mb-4">
-                  <img src={project.image || "/placeholder.svg"} alt={project.title} className="w-full h-48 object-cover rounded-lg" />
-                </div>
-                <div className="space-y-4">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1">{project.title}</h2>
+       {loading ? (
+  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    {Array(6).fill(0).map((_, i) => (
+      <div
+        key={i}
+        className="p-6 rounded-xl bg-white dark:bg-gray-800 shadow animate-pulse space-y-4"
+      >
+        <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+        <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
+        <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
+        <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-2/3"></div>
+        <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+        <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded mt-4"></div>
+      </div>
+    ))}
+  </div>
+) : (
 
-                  <div>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{project.description}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {projects.map((project) => {
+              const imgSrc = getImageUrl(project.image) || placeholderImage
+              return (
+                <div
+                  key={project.id}
+                  className="card bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 hover:shadow-lg transition-shadow p-6 rounded-xl"
+                >
+                  <div className="relative mb-4">
+                    <img
+                      src={imgSrc}
+                      alt={project.title}
+                      className="w-full h-48 object-cover rounded-lg"
+                      onError={(e) => {
+                        e.currentTarget.src = placeholderImage
+                      }}
+                    />
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">{t("fundingProgress")}</span>
-                      <span className="font-medium">${project.feasibility_study?.current_revenue?.toLocaleString()} / ${project.feasibility_study?.funding_required?.toLocaleString()}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-primary-600 h-2 rounded-full" style={{
-      width: `${Math.min(
-        (project.feasibility_study?.current_revenue /
-          project.feasibility_study?.funding_required) *
-          100,
-        100
-      )}%`,
-    }}
-  ></div>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="space-y-4">
+                    <h2 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1">{project.title}</h2>
+
                     <div>
-                      <span className="text-gray-600 dark:text-gray-400">Min Investment</span>
-                      <div className="font-medium">${Math.round(project.feasibility_study?.funding_required / 10)?.toLocaleString()}</div>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{project.description}</p>
                     </div>
-                    <div>
-                      <span className="text-gray-600 dark:text-gray-400">Expected Return</span>
-                      <div className="font-medium text-green-600">{project.feasibility_study?.expected_profit_margin}</div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600 dark:text-gray-400">Funding Progress</span>
+                        <span className="font-medium">
+                          ${project.feasibility_study?.current_revenue?.toLocaleString()} / ${project.feasibility_study?.funding_required?.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div
+                          className="bg-primary-600 h-2 rounded-full"
+                          style={{
+                            width: `${Math.min(
+                              (project.feasibility_study?.current_revenue / project.feasibility_study?.funding_required) * 100,
+                              100
+                            )}%`,
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                  </div>
-                  <div className=" justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="text-center mt-4">
-                    <Link to={`/investor/project/${project.id}`} className="btn-primary text-sm px-8 py-4">
-                      {t("viewDetails")}
-                    </Link>
-                  </div>
+
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600 dark:text-gray-400">Min Investment</span>
+                        <div className="font-medium">${Math.round(project.feasibility_study?.funding_required / 10)?.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600 dark:text-gray-400">Expected Return</span>
+                        <div className="font-medium text-green-600">{project.feasibility_study?.expected_profit_margin}</div>
+                      </div>
+                    </div>
+
+                    <div className="justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                      <div className="text-center mt-4">
+                        <Link to={`/investor/project/${project.id}`} className="btn-primary text-sm px-8 py-4">
+                          {t("viewDetails")}
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
 
@@ -212,6 +261,7 @@ const handleFilterChange = (key, value) => {
           </div>
         )}
       </div>
+      <Footer/>
     </div>
   )
 }

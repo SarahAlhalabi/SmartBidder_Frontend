@@ -54,12 +54,9 @@ function App() {
           <Router>
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
               <Routes>
-                {/* Public Routes */}
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
-
-                {/* Protected Routes */}
                 <Route
                   path="/investor/dashboard"
                   element={
@@ -77,7 +74,6 @@ function App() {
                   }
                 />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
-                {/* Additional Project Owner Routes */}
                 <Route
                   path="/project-owner/projects"
                   element={
@@ -147,8 +143,6 @@ function App() {
 />
 
 <Route path="/project-owner/settings" element={<Settings />} />
-
-                {/* Additional Investor Routes */}
                 <Route
                   path="/investor/browse"
                   element={
@@ -220,7 +214,6 @@ function App() {
       <InvestorProfile />
     </ProtectedRoute>
   }
-  
                 />
                     <Route
       path="/investor/edit-profile"
@@ -230,7 +223,6 @@ function App() {
         </ProtectedRoute>
       }
     />
-                {/* Negotiation Routes - Accessible by both investors and project owners */}
                 <Route
                   path="/negotiation/:negotiationId"
                   element={

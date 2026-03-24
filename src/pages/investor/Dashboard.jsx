@@ -8,14 +8,14 @@ import {
 import { useLanguage } from "../../contexts/LanguageContext"
 import { useAuth } from "../../contexts/AuthContext"
 import Header from "../../components/common/Header"
-
+import Footer from "../../components/common/Footer"
 const InvestorDashboard = () => {
   const { t, isRTL } = useLanguage()
   const { user } = useAuth()
 
   const [recentInvestments, setRecentInvestments] = useState([])
-  const [recentNotifications, setRecentNotifications] = useState([])  // تم نقل هنا
-  const [stats, setStats] = useState({                                // تم نقل هنا
+  const [recentNotifications, setRecentNotifications] = useState([])  
+  const [stats, setStats] = useState({                               
     totalOffers: 0,
     pendingOffers: 0,
     totalInvestedAmount: 0,
@@ -24,33 +24,39 @@ const InvestorDashboard = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
 
-    const fetchInvestments = async () => {
-      try {
-        const res = await fetch("http://127.0.0.1:8000/investor/my-offers/", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        const data = await res.json();
+   const fetchInvestments = async () => {
+  try {
+    const res = await fetch("http://127.0.0.1:8000/investor/my-offers/", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    const data = await res.json();
+    console.log("Fetched Offers:", data); 
+    const filtered = data.filter(
+      offer => offer.status === "accepted"
+    );
+    const formatted = filtered.map(offer => ({
+      id: offer.id,
+      projectTitle: offer.project_title || "Unnamed Project",   
+      projectImage: offer.project_image || null,                 
+      category: offer.category || "Uncategorized",         
+      status: offer.status,
+      amount: parseFloat(offer.amount) || 0,
+      ownership: offer.equity_percentage || 0,
+      return: offer.status === "accepted" ? 10 + Math.floor(Math.random() * 10) : 0,
+      projectOwner: offer.investor_name || "Unknown",            
+      investorImage: offer.investor_profile_picture || null,    
+      createdAt: offer.created_at,
+      additionalTerms: offer.additional_terms || "",
+      projectId: offer.project || null                           
+    }));
 
-        const filtered = data.filter(
-          offer => offer.status === "accepted" || offer.project.status === "active"
-        );
+    setRecentInvestments(formatted.slice(0, 2));
 
-        const formatted = filtered.map(offer => ({
-          id: offer.id,
-          projectTitle: offer.project.title,
-          category: offer.project.category,
-          status: offer.project.status,
-          amount: parseFloat(offer.amount),
-          ownership: offer.equity_percentage,
-          return: offer.status === "accepted" ? 10 + Math.floor(Math.random() * 10) : 0,
-          projectOwner: "Unknown",
-        }));
+  } catch (error) {
+    console.error("❌ Error fetching investments:", error);
+  }
+};
 
-        setRecentInvestments(formatted.slice(0, 2));
-      } catch (error) {
-        console.error("❌ Error fetching investments:", error);
-      }
-    };
 
     const fetchNotifications = async () => {
       try {
@@ -178,20 +184,12 @@ const InvestorDashboard = () => {
 
       <div className="container-full">
         <div className="main-content">
- 
 
-
-
-         
-          {/* Quick Actions */}
           <div className="mb-8">
        <div className="w-full max-w-6xl -mt-14 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <Zap className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
       Quick <span className="text-blue-600">Actions</span>
@@ -219,17 +217,13 @@ const InvestorDashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            {/* Recent Investments */}
             <div className="xl:col-span-2">
   <div className="card">
     <div className="flex items-center justify-between mb-6">
     <div className="w-full max-w-6xl -mt-2 px-2 py-6 md:py-0 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <BarChart3 className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
       Recent <span className="text-blue-600">Investments</span>
@@ -252,30 +246,10 @@ const InvestorDashboard = () => {
         >
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-  <div className="flex items-center space-x-3 mb-2">
-    {/* ✅ أيقونة نوع المشروع */}
-    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200 text-xs">
-      {investment.category === "medical" ? "🩺" :
-        investment.category === "tech" ? "💻" :
-        investment.category === "general_trade" ? "🛒" : "📁"}
-    </span>
-    <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-      {investment.projectTitle}
-    </h4>
-    <span className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full capitalize">
-      {investment.category.replace("_", " ")}
-    </span>
-  </div>
-
-  {investment.projectOwner && investment.projectOwner !== "Unknown" && (
-    <p className="text-sm text-gray-600 dark:text-gray-400">
-      by {investment.projectOwner}
-    </p>
-  )}
+<h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+  {investment.projectTitle}
+</h3>
 </div>
-
-
-            {/* ✅ شارة الحالة */}
             <span
               className={`px-3 py-1 text-sm font-medium rounded-full shadow-sm ${
                 investment.status === "active"
@@ -320,8 +294,6 @@ const InvestorDashboard = () => {
               </div>
             </div>
           </div>
-
-          {/* ✅ شريط تقدم ownership */}
           <div className="mt-3 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
             <div
               className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
@@ -333,9 +305,6 @@ const InvestorDashboard = () => {
     </div>
   </div>
 </div>
-
-
-
          <div className="mt-1">
   <div className="card bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
     <div className="flex items-center justify-between mb-6">
@@ -385,13 +354,11 @@ const InvestorDashboard = () => {
     </div>
   </div>
 </div>
-
           </div>
-
-          {/* Notifications Preview */}
           
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }

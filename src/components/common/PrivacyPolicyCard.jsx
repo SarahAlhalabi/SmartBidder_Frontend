@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import { Button } from "../../../components/ui/button";
-import { Lock } from "lucide-react"; // أيقونة القفل
+import { Lock } from "lucide-react";
 
 export default function PrivacyPolicyCard() {
   const [expanded, setExpanded] = useState(false);

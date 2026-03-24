@@ -18,6 +18,7 @@ import {
 import { useLanguage } from "../../contexts/LanguageContext"
 import { useAuth } from "../../contexts/AuthContext"
 import Header from "../../components/common/Header"
+import Footer from "../../components/common/Footer"
 
 const AIAssistant = () => {
   const { t, isRTL } = useLanguage()
@@ -36,7 +37,6 @@ const AIAssistant = () => {
   const [isTyping, setIsTyping] = useState(false)
   const [selectedProject, setSelectedProject] = useState(null)
 
-
   const suggestedQuestions = [
     "What are the best projects for a $50,000 investment?",
     "Analyze the risk profile of technology projects",
@@ -49,57 +49,55 @@ const AIAssistant = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
-const handleSendMessage = async () => {
-  if (!newMessage.trim()) return
+  const handleSendMessage = async () => {
+    if (!newMessage.trim()) return
 
-  const userMessage = {
-    id: Date.now(),
-    type: "user",
-    content: newMessage,
-    timestamp: new Date().toISOString(),
-  }
-
-  setMessages((prev) => [...prev, userMessage])
-  setNewMessage("")
-  setIsTyping(true)
-
-  try {
-    const res = await fetch("http://127.0.0.1:8002/investor_chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: newMessage,
-        session_id: user?.id?.toString() || "default",
-      }),
-    })
-
-    const data = await res.json()
-
-    const aiMessage = {
-      id: Date.now() + 1,
-      type: "ai",
-      content: data.answer, // ✅ عرض رد الذكاء الاصطناعي الفعلي
+    const userMessage = {
+      id: Date.now(),
+      type: "user",
+      content: newMessage,
       timestamp: new Date().toISOString(),
     }
 
-    setMessages((prev) => [...prev, aiMessage])
-  } catch (error) {
-    console.error("❌ Chatbot error:", error)
-    const errorMsg = {
-      id: Date.now() + 1,
-      type: "ai",
-      content: "Sorry, something went wrong. Please try again.",
-      timestamp: new Date().toISOString(),
+    setMessages((prev) => [...prev, userMessage])
+    setNewMessage("")
+    setIsTyping(true)
+
+    try {
+      const res = await fetch("http://localhost:8002/investor_chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: newMessage,
+          session_id: user?.id?.toString() || "default",
+        }),
+      })
+
+      const data = await res.json()
+
+      const aiMessage = {
+        id: Date.now() + 1,
+        type: "ai",
+        content: data.answer,
+        timestamp: new Date().toISOString(),
+      }
+
+      setMessages((prev) => [...prev, aiMessage])
+    } catch (error) {
+      console.error("❌ Chatbot error:", error)
+      const errorMsg = {
+        id: Date.now() + 1,
+        type: "ai",
+        content: "Sorry, something went wrong. Please try again.",
+        timestamp: new Date().toISOString(),
+      }
+      setMessages((prev) => [...prev, errorMsg])
+    } finally {
+      setIsTyping(false)
     }
-    setMessages((prev) => [...prev, errorMsg])
-  } finally {
-    setIsTyping(false)
   }
-}
-
-
 
   const ProjectAnalysisCard = ({ project }) => (
     <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
@@ -124,25 +122,21 @@ const handleSendMessage = async () => {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col">
       <Header />
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Chat Section */}
+      <div className="flex-1 max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="col-span-2 card h-[600px] flex flex-col">
-                   <div className="w-full max-w-6xl -mt-6 px-2 py-6 md:py-6 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
-  <div className="p-1 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
-    <Bot className="h-6 w-6" />
-  </div>
-
-  {/* نص العنوان والوصف */}
-  <div>
-    <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white ">
-      Smart <span className="text-blue-600"> Investment Advisor</span>
-    </h1>
-    <div className="h-1 w-28 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
-  </div>
-</div>
+          <div className="w-full max-w-6xl -mt-6 px-2 py-6 md:py-6 flex items-center gap-4 bg-transparent">
+            <div className="p-1 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
+              <Bot className="h-6 w-6" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white ">
+                Smart <span className="text-blue-600"> Investment Advisor</span>
+              </h1>
+              <div className="h-1 w-28 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
+            </div>
+          </div>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((msg) => (
@@ -182,10 +176,7 @@ const handleSendMessage = async () => {
             </div>
           </div>
         </div>
-
-        {/* Sidebar */}
         <div className="space-y-6">
-        
           <div className="card p-4 space-y-2">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Suggested Questions</h3>
             {suggestedQuestions.map((q, i) => (
@@ -196,10 +187,9 @@ const handleSendMessage = async () => {
               >{q}</button>
             ))}
           </div>
-
-          
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

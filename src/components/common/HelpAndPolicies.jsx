@@ -32,9 +32,6 @@ const itemVariants = {
     transition: { duration: 0.6 },
   },
 };
-
-
-// قسم Our Services مع ست بطاقات وتحريك
 function OurServices() {
   const services = [
     {
@@ -130,10 +127,6 @@ const location = useLocation();
       }
     }
   }, [location]);
-
-
-
-  // مودال الشكوى
   const [modalOpen, setModalOpen] = useState(false);
   const [description, setDescription] = useState("");
   const [defendantName, setDefendantName] = useState("");
@@ -178,14 +171,10 @@ const location = useLocation();
     }
   }
 };
-
-
-
   return (
     <div style={{ fontFamily: "'Inter', sans-serif" }} className="flex flex-col min-h-[100vh]">
       <Header />
       <main className="flex-1">
-        {/* Hero Section */} 
         <section id ="about" className="w-full py-16 bg-muted">
           <div className="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-12">
             <div className="flex flex-col max-w-xl mx-auto text-center lg:text-left">
@@ -213,8 +202,6 @@ const location = useLocation();
             </div>
           </div>
         </section>
-
-        {/* مودال الشكوى */}
         {modalOpen && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto">
@@ -274,21 +261,11 @@ const location = useLocation();
             </div>
           </div>
         )}
-
-        {/* قسم الخدمات */}
         <OurServices />
-
-        {/* Our policy Section */}
  <PrivacyPolicyCard/>
-        {/* Our Terms Section */}
-    
-
-        {/* Call to Action Section */}
              <TermsAndConditionsCard />
       </main>
   <Footer onOpenContact={() => setModalOpen(true)} />
-      {/* Footer */}
-      
     </div>
    
   );

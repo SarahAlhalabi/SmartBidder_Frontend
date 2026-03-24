@@ -33,10 +33,8 @@ const ForgotPassword = ({ darkMode, direction }) => {
 
     try {
       const response = await axios.post("http://localhost:8000/accounts/reset-password/", { email })
-      // نجاح - تم ارسال كلمة السر الجديدة
       setIsSubmitted(true)
     } catch (err) {
-      // الخطأ من API
       const msg =
         err.response?.data?.email?.[0] ||
         err.response?.data?.detail ||

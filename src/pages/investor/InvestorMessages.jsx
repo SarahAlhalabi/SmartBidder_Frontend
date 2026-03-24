@@ -4,39 +4,36 @@ import { useState, useEffect, useRef } from "react"
 import { Send, Search, MessageSquare } from "lucide-react"
 import { useLanguage } from "../../contexts/LanguageContext"
 import Header from "../../components/common/Header"
+import Footer from "../../components/common/Footer"
 import axios from "axios"
 
-const InvestorMessages = () => {
-  const { t, isRTL } = useLanguage()
+const Messages = () => {
+  const { t } = useLanguage()
   const [selectedConversation, setSelectedConversation] = useState(null)
   const [newMessage, setNewMessage] = useState("")
   const [searchTerm, setSearchTerm] = useState("")
   const [conversations, setConversations] = useState([])
   const [messages, setMessages] = useState([])
-  const [messagesLoaded, setMessagesLoaded] = useState(false)
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    const fetchConversations = async () => {
+    async function fetchConversations() {
       try {
         const token = localStorage.getItem("accessToken")
         const res = await axios.get("http://127.0.0.1:8000/investor/conversations/", {
           headers: { Authorization: `Bearer ${token}` },
         })
         setConversations(res.data || [])
-      } catch (err) {
-        console.error("❌ Error fetching conversations", err)
+      } catch (error) {
+        console.error("❌ Error fetching conversations", error)
       }
     }
-
     fetchConversations()
   }, [])
 
   const loadConversation = async (conversation) => {
     if (!conversation) return
-
     setSelectedConversation(conversation)
-    setMessagesLoaded(false)
 
     try {
       const token = localStorage.getItem("accessToken")
@@ -45,7 +42,6 @@ const InvestorMessages = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setMessages(Array.isArray(res.data) ? res.data : res.data.results || [])
-      setMessagesLoaded(true)
 
       await axios.post(
         `http://127.0.0.1:8000/investor/messages/${conversation.offer_id}/mark-read/`,
@@ -58,14 +54,13 @@ const InvestorMessages = () => {
           c.offer_id === conversation.offer_id ? { ...c, is_read: true } : c
         )
       )
-    } catch (err) {
-      console.error("❌ Error loading messages", err)
+    } catch (error) {
+      console.error("❌ Error loading messages", error)
     }
   }
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedConversation) return
-
     try {
       const token = localStorage.getItem("accessToken")
       const res = await axios.post(
@@ -76,8 +71,8 @@ const InvestorMessages = () => {
       setMessages((prev) => [...prev, res.data])
       setNewMessage("")
       scrollToBottom()
-    } catch (err) {
-      console.error("❌ Error sending message", err)
+    } catch (error) {
+      console.error("❌ Error sending message", error)
     }
   }
 
@@ -106,24 +101,18 @@ const InvestorMessages = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <div className="max-w-screen-xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-          <div>
-
-    <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
-  <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
-    <MessageSquare  className="h-6 w-6" />
-  </div>
-
-  {/* نص العنوان والوصف */}
-  <div>
-    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Messages</h1>
-    <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
-  </div>
-</div>
-                <p className="text-m text-gray-500 -mt-6 mb-6 px-16">Communicate with project owners and negotiate deals</p>
+        <div>
+          <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
+            <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
+              <MessageSquare className="h-6 w-6" />
             </div>
-         
-      
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Messages</h1>
+              <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2" />
+            </div>
+          </div>
+          <p className="text-m text-gray-500 -mt-6 mb-6 px-16">Communicate with users and manage negotiations</p>
+        </div>
 
         <div className="flex flex-col lg:flex-row gap-6" style={{ height: "75vh" }}>
           <div className="w-full lg:w-[360px]">
@@ -142,9 +131,7 @@ const InvestorMessages = () => {
               </div>
               <div className="flex-1 overflow-y-auto">
                 {filteredConversations.length === 0 ? (
-                  <p className="text-center text-gray-500 dark:text-gray-400 p-4">
-                    {conversations.length === 0 && searchTerm === "" ? "Loading..." : "No conversations found"}
-                  </p>
+                  <p className="text-center text-gray-500 dark:text-gray-400 p-4">No conversations</p>
                 ) : (
                   filteredConversations.map((conversation) => (
                     <div
@@ -158,7 +145,7 @@ const InvestorMessages = () => {
                     >
                       <div className="flex items-start space-x-3">
                         <img
-                          src={"/placeholder.svg"}
+                          src={conversation.profile_picture || "/placeholder.svg"}
                           alt={conversation.other_user_full_name}
                           className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500"
                         />
@@ -194,7 +181,7 @@ const InvestorMessages = () => {
                   <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center space-x-3">
                       <img
-                        src={"/placeholder.svg"}
+                        src={selectedConversation.profile_picture || "/placeholder.svg"}
                         alt={selectedConversation.other_user_full_name}
                         className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500"
                       />
@@ -208,9 +195,7 @@ const InvestorMessages = () => {
                   </div>
 
                   <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                    {!messagesLoaded ? (
-                      <p className="text-center text-gray-500 dark:text-gray-400">Loading...</p>
-                    ) : messages.length === 0 ? (
+                    {messages.length === 0 ? (
                       <p className="text-center text-gray-500 dark:text-gray-400">No messages yet</p>
                     ) : (
                       messages.map((message) => (
@@ -223,13 +208,7 @@ const InvestorMessages = () => {
                             }`}
                           >
                             <p className="text-sm">{message.message}</p>
-                            <p
-                              className={`text-xs mt-1 ${
-                                message.from_me
-                                  ? "text-blue-100"
-                                  : "text-gray-500 dark:text-gray-300"
-                              }`}
-                            >
+                            <p className={`text-xs mt-1 ${message.from_me ? "text-blue-100" : "text-gray-500 dark:text-gray-300"}`}>
                               {formatTime(message.timestamp)}
                             </p>
                           </div>
@@ -272,8 +251,9 @@ const InvestorMessages = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }
 
-export default InvestorMessages
+export default Messages

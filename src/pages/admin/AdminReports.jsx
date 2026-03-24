@@ -120,12 +120,9 @@ const AdminReports = () => {
        <div>
 
     <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <AlertTriangle  className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
       Complaints
@@ -135,8 +132,6 @@ const AdminReports = () => {
 </div>
                 <p className="text-m text-gray-500 -mt-6 mb-6 px-16">Manage and review user complaints</p>
             </div>
-
-   
 
         <div className="space-y-4">
           {complaints
@@ -176,8 +171,6 @@ const AdminReports = () => {
             ))}
         </div>
       </div>
-
-      {/* مودال تفاصيل الشكوى */}
       {isDetailOpen && selectedComplaint && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto relative">
@@ -231,5 +224,4 @@ const AdminReports = () => {
     </div>
   )
 }
-
 export default AdminReports

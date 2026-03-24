@@ -13,8 +13,6 @@ const ChatWidgetButton = () => {
   const shouldHide = hideChatbotPages.includes(location.pathname) || userRole === "admin"
 
   if (shouldHide) return null
-
-  // ✅ عند الضغط انتقل لصفحة الشات
   const handleClick = () => {
     if (userRole === "investor") {
       navigate("/investor/ai-assistant")

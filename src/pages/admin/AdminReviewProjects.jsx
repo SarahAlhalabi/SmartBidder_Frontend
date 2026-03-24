@@ -28,6 +28,7 @@ const AdminReviewProjects = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         const data = await response.json()
+        console.log("Projects Data:", data);
         setProjects(data)
       } catch (error) {
         console.error("Error fetching projects:", error)
@@ -50,12 +51,9 @@ const AdminReviewProjects = () => {
         <div>
 
     <div className="w-full max-w-6xl -mt-10 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <FileSearch className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
       Review <span className="text-blue-600">Projects</span>
@@ -65,8 +63,6 @@ const AdminReviewProjects = () => {
 </div>
                 <p className="text-m text-gray-500 -mt-6 px-16">All submited projects on the platform</p>
             </div>
-
-        {/* Search & Filters */}
         <div className="card mb-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow space-y-4 mt-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1 relative">
@@ -106,8 +102,6 @@ const AdminReviewProjects = () => {
             </div>
           )}
         </div>
-
-        {/* Projects Section */}
         {loading ? (
           <p className="text-center text-gray-500 dark:text-gray-400">Loading projects...</p>
         ) : filteredProjects.length === 0 ? (
@@ -127,11 +121,11 @@ const AdminReviewProjects = () => {
               >
                 <div className="space-y-4">
                   <div className="relative">
-                    <img
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      className="w-full h-48 object-cover rounded-lg"
-                    />
+              <img
+  src={project.image_url || "/placeholder.svg"}
+  alt={project.title}
+  className="w-full h-48 object-cover rounded-lg"
+/>
                   </div>
 
                   <h2 className="text-lg font-bold">{project.title}</h2>
@@ -148,7 +142,6 @@ const AdminReviewProjects = () => {
     View Details
   </Link>
 </div>
-
                 </div>
               </div>
             ))}

@@ -43,7 +43,6 @@ export const AuthProvider = ({ children }) => {
 
       const roleFromBackend = data.role?.toLowerCase()
 
-      // ✅ تحسين التحقق من الدور
       const normalizedRole = ["owner", "project_owner", "project-owner"].includes(roleFromBackend)
         ? "project-owner"
         : roleFromBackend || "investor"
@@ -54,7 +53,6 @@ export const AuthProvider = ({ children }) => {
         role: normalizedRole,
       }
 
-      // ✅ طباعة للمساعدة على التحقق
       console.log("🟡 الدور المستلم من الباك:", data.role)
       console.log("🟢 الدور المستخدم فعليًا:", normalizedRole)
       console.log("🔵 بيانات المستخدم:", loggedUser)

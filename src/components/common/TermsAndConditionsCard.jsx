@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import { Button } from "../../../components/ui/button";
-import { CheckCircle2 } from "lucide-react"; // أيقونة الصح الخضراء
+import { CheckCircle2 } from "lucide-react"; 
 
 export default function TermsAndConditionsCard() {
   const [expanded, setExpanded] = useState(false);

@@ -25,6 +25,7 @@ import { useEffect, useState } from "react"
 import { useLanguage } from "../../contexts/LanguageContext"
 import { useAuth } from "../../contexts/AuthContext"
 import Header from "../../components/common/Header"
+import Footer from "../../components/common/Footer"
 
 const StatsCard = ({ title, value, color, Icon, note }) => (
   <div className={`group stats-card border-l-4 border-l-${color}-500 bg-white dark:bg-gray-800 rounded-xl shadow p-5 transition-all duration-300 hover:shadow-xl hover:border-l-${color}-700`}>
@@ -104,7 +105,7 @@ useEffect(() => {
           goal: proj.feasibility_study?.funding_required || 100000,
           category: proj.category || "General",
           investors: proj.investors_count || 0,
-          daysLeft: proj.days_left || 30, // حسب ما توفر
+          daysLeft: proj.days_left || 30, 
         }))
 
       setRecentProjects(recent)
@@ -138,7 +139,8 @@ useEffect(() => {
 
   return (
     
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+   <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-blue-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+
       <Header />
        <header className="relative overflow-hidden py-16 px-6 md:px-10 lg:px-16 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 text-gray-900 w-full max-w-none mb-2">
 
@@ -182,36 +184,12 @@ useEffect(() => {
   </div>
 </header>
       <div className="main-content px-4 md:px-8 xl:px-16 py-8">
-    
-
-   {/* <div className="mb-8">
-            <Link
-              to="/project-owner/ai-assistant"
-              className="block p-6 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl text-white hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                    <Bot className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-1">Smart Project Assistant</h3>
-                    <p className="text-purple-100">Let AI analyze and recommend the best investment offer for your project</p>
-                  </div>
-                </div>
-                <ArrowUpRight className="w-6 h-6 text-white" />
-              </div>
-            </Link>
-          </div> */}
 
       <div className="mb-8">
  <div className="w-full max-w-6xl -mt-14 px-2 py-6 md:py-8 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <Zap className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
       Quick <span className="text-blue-600">Actions</span>
@@ -248,12 +226,9 @@ useEffect(() => {
     <div className="card bg-white dark:bg-gray-800 p-6 rounded-xl shadow h-full">
       <div className="flex items-center justify-between mb-4">
         <div className="w-full max-w-6xl -mt-2 px-2 py-6 md:py-0 flex items-center gap-4 bg-transparent">
-  {/* أيقونة العنوان */}
   <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <Clock className="h-6 w-6" />
   </div>
-
-  {/* نص العنوان والوصف */}
   <div>
     <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
       Recent <span className="text-blue-600">Projects</span>
@@ -379,8 +354,6 @@ useEffect(() => {
       <div className="p-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-md">
     <BellDot className="h-6 w-6" />
   </div>
-
-  {/* العنوان  */} 
   <div>
     <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
       Notificatons
@@ -438,7 +411,10 @@ useEffect(() => {
   </div>
 </div>
 </div>
+
+<Footer />
 </div>
+
 )
 }
 export default ProjectOwnerDashboard

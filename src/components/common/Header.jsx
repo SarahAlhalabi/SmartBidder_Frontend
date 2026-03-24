@@ -21,8 +21,6 @@ const Header = () => {
   const handleLanguageChange = () => {
     changeLanguage(language === "en" ? "ar" : "en")
   }
-
-  // إغلاق القائمة المنسدلة إذا نقر المستخدم خارجها
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -55,13 +53,10 @@ const Header = () => {
               />
             </Link>
           </div>
-
-          {/* Desktop Navigation */}
           <div
             className="hidden md:flex items-center space-x-4 relative"
             ref={dropdownRef}
           >
-            {/* إذا المستخدم ليس أدمن، نعرض البروفايل والاعدادات مع روابط الدعم */}
             {user && user.role !== "admin" && (
               <div className="relative">
                 <button
@@ -72,9 +67,10 @@ const Header = () => {
                     <User className="w-4 h-4 text-white" />
                   </div>
                   <div className="text-sm text-left">
-                    <p className="font-medium text-gray-900 dark:text-gray-100">
-                      {user.username}
-                    </p>
+                   <p className="font-medium text-gray-900 dark:text-gray-100">
+  Adam Alkilani
+</p>
+
                     <p className="text-gray-500 dark:text-gray-400 capitalize">
                       {user.role?.replace("-", " ")}
                     </p>
@@ -126,8 +122,6 @@ const Header = () => {
                 </AnimatePresence>
               </div>
             )}
-
-            {/* زر تبديل الثيم دائمًا */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300"
@@ -138,8 +132,6 @@ const Header = () => {
                 <Moon className="w-5 h-5" />
               )}
             </button>
-
-            {/* زر تسجيل الخروج دائمًا */}
             {user && (
               <button
                 onClick={logout}
@@ -149,8 +141,6 @@ const Header = () => {
               </button>
             )}
           </div>
-
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300"
